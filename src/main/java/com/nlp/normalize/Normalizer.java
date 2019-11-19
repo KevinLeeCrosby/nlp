@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -62,7 +63,17 @@ public final class Normalizer {
 
   public static void main(String[] args) {
     //String utterance = "agent customer customer customer service service customer customer service service service agent agent";
-    String utterance = "five potato five potato tomato two tomato two agent agent agent four four foo bar bar bar foo foo bar forty sixty forty sixty";
-    System.out.format("\"%s\" => \"%s\"\n", utterance, normalize(utterance));
+    //String utterance = "five potato five potato tomato two tomato two agent agent agent four four foo bar bar bar foo foo bar forty sixty forty sixty";
+
+    Scanner scanner = new Scanner(System.in).useDelimiter("\\n");
+    String utterance;
+    String flag = "xxx";
+    do {
+      System.out.format("Enter utterance (\"%s\" to stop):\t", flag);
+      utterance = scanner.next();
+      if (!utterance.equals(flag)) {
+        System.out.format("\"%s\"\n   => \"%s\"\n", utterance, normalize(utterance));
+      }
+    } while (!utterance.equals(flag));
   }
 }
