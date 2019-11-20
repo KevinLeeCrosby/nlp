@@ -18,25 +18,25 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * Takes in a confusion matrix and computes additional statistics on the matrix.
+ * Takes in a confusion matrix and computes additional scores on the matrix.
  * The keys are the correct classification answers (gold) and the values are the actual answers' counts (system).
  *
  * @author Kevin Crosby.
  */
-public class Statistics {
+public class Scores {
   private final Map<String, Map<String, Long>> matrix;
-  private final Map<String, Stats> statMap;
+  private final Map<String, Metrics> metricsMap;
 
-  public Statistics(final Map<String, Map<String, Long>> matrix) {
+  public Scores(final Map<String, Map<String, Long>> matrix) {
     this.matrix = matrix;
-    statMap = Maps.newConcurrentMap();
+    metricsMap = Maps.newConcurrentMap();
   }
 
-  private class Stats {
+  private class Metrics {
     private final String category;
     private final long tp, tn, fp, fn;
 
-    private Stats(final String category) {
+    private Metrics(final String category) {
       this.category = category;
       long tp = 0, tn = 0, fn = 0, tfp = 0; // tp + fp
       if (matrix.containsKey(category)) {
@@ -108,8 +108,8 @@ public class Statistics {
     }
   }
 
-  private Stats compute(final String category) {
-    return statMap.computeIfAbsent(category, Stats::new);
+  private Metrics compute(final String category) {
+    return metricsMap.computeIfAbsent(category, Metrics::new);
   }
 
   /**
@@ -315,30 +315,30 @@ public class Statistics {
   }
 
   /**
-   * Show the statistics on the screen.
+   * Show the scores on the screen.
    */
-  public void showStats() {
-    generateStats(System.out);
+  public void showScores() {
+    generateScores(System.out);
   }
 
   /**
-   * Write the statistics to a file.
+   * Write the scores to a file.
    */
-  public void writeStats(final File file) {
+  public void writeScores(final File file) {
     try {
       if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
         System.err.format("Cannot create directory for file \"%s\"\n", file);
         System.exit(1);
       }
       OutputStream os = new FileOutputStream(file);
-      generateStats(os);
+      generateScores(os);
       os.close();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  private void generateStats(final OutputStream os) {
+  private void generateScores(final OutputStream os) {
     PrintWriter out = new PrintWriter(os, true);
     // show header
     String divider = new String(new char[90]).replace("\0", "-");
