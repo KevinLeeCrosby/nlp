@@ -28,7 +28,7 @@
     <!-- Common dependencies -->
     <commons.lang.version>3.7</commons.lang.version>
     <enforcer.rules.version>1.0-beta-7</enforcer.rules.version>
-    <guava.version>25.0-jre</guava.version>
+    <guava.version>29.0-jre</guava.version>
     <junit.version>4.12</junit.version>
     <owlapi.version>5.1.5</owlapi.version>
 
